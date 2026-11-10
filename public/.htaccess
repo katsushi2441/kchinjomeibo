@@ -1,0 +1,6 @@
+# Kurage 陳情・名簿
+# レンタルサーバーの PHP の版の指定は、サーバーごとに違う（例: heteml は "AddHandler php-script .php"）。必要なら1行足す。
+DirectoryIndex index.php
+<FilesMatch "^(kcm_config\.php|kcm_config\.php\.example|kcm_lib\.php)$">
+  Require all denied
+</FilesMatch>
