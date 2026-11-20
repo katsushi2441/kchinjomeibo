@@ -670,7 +670,7 @@ function demo_reset_if_old(PDO $p): void
     if ($s && $s > date('Y-m-d H:i:s', time() - 86400)) { return; }
     foreach (['oplog', 'invites', 'events', 'case_logs', 'cases', 'plan_items', 'plans', 'visits', 'people', 'users', 'settings'] as $t) { $p->exec("DELETE FROM $t"); }
     $p->exec("DELETE FROM meta WHERE k LIKE 'ai_%'");
-    $p->exec('DELETE FROM sqlite_sequence');
+    if ($p->query("SELECT 1 FROM sqlite_master WHERE type='table' AND name='sqlite_sequence'")->fetchColumn()) { $p->exec('DELETE FROM sqlite_sequence'); }   // AUTOINCREMENT の表が無いと sqlite_sequence は無い（無いまま消すと毎回 500 になっていた）
     seed_demo($p);
 }
 function seed_demo(PDO $p): void
